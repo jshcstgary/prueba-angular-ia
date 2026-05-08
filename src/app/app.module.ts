@@ -1,3 +1,4 @@
+import { provideHttpClient } from "@angular/common/http";
 import { NgModule, provideBrowserGlobalErrorListeners } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 
@@ -7,7 +8,7 @@ import { App } from "./app.component";
 @NgModule({
 	declarations: [App],
 	imports: [BrowserModule, AppRoutingModule],
-	providers: [provideBrowserGlobalErrorListeners()],
+	providers: [provideBrowserGlobalErrorListeners(), provideHttpClient()],
 	bootstrap: [App]
 })
 export class AppModule { }
