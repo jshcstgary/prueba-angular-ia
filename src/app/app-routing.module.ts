@@ -24,8 +24,13 @@ const routes: Routes = [
 		loadChildren: () => import("./modules/auth/auth.module").then((m) => m.AuthModule)
 	},
 	{
+		path: "tickets",
+		canActivate: [authGuard],
+		loadChildren: () => import("./modules/ticket/ticket.module").then((m) => m.TicketModule)
+	},
+	{
 		path: "",
-		redirectTo: "modules",
+		redirectTo: "tickets",
 		pathMatch: "full"
 	}
 ];
@@ -34,4 +39,4 @@ const routes: Routes = [
 	imports: [RouterModule.forRoot(routes)],
 	exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

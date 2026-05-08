@@ -38,7 +38,7 @@ export class AuthComponent {
 				next: (response) => {
 					if (response.status === "success") {
 						this.toastService.show("Bienvenido de nuevo");
-						this.router.navigate(["/modules"]);
+						this.router.navigate(["/tickets"]);
 					} else {
 						this.toastService.show(response.status);
 					}
@@ -56,7 +56,7 @@ export class AuthComponent {
 				next: (response) => {
 					if (response.status === "success") {
 						this.toastService.show("Registro exitoso");
-						this.router.navigate(["/modules"]);
+						this.router.navigate(["/tickets"]);
 					} else {
 						this.toastService.show(response.status);
 					}

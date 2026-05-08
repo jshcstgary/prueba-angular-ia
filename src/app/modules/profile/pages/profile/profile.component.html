@@ -1,63 +1,69 @@
-<div class="p-6">
-	<div class="flex justify-between items-center mb-6">
-		<h1 class="text-3xl font-bold">Perfiles</h1>
-		<button class="btn-primary">
+<div class="p-8">
+	<div class="flex justify-between items-center mb-8">
+		<h1 class="text-3xl font-bold text-white">Perfiles</h1>
+		<button (click)="openModal()" class="btn-primary">
 			<span class="material-icons">add</span>
 			Nuevo
 		</button>
 	</div>
 
-	<div class="card">
-		<table>
-			<thead>
-				<tr>
-					<th>Nombre</th>
-					<th>Descripción</th>
-					<th>Última Modificación</th>
-					<th>Opciones</th>
-					<th class="text-center">Acciones</th>
-				</tr>
-			</thead>
-			<tbody>
-				@if (profiles() === undefined) {
-					<tr>
-						<td colspan="5" class="text-center py-10">
-							<span class="material-icons spinner">sync</span>
-						</td>
+	<div class="card overflow-hidden">
+		<div class="overflow-x-auto">
+			<table class="w-full text-left border-collapse">
+				<thead>
+					<tr class="bg-[#3c3f68] text-gray-300 uppercase text-xs tracking-wider">
+						<th class="px-6 py-4 font-semibold">Nombre</th>
+						<th class="px-6 py-4 font-semibold">Descripción</th>
+						<th class="px-6 py-4 font-semibold">Última Modificación</th>
+						<th class="px-6 py-4 font-semibold">Opciones</th>
+						<th class="px-6 py-4 font-semibold text-center">Acciones</th>
 					</tr>
-				} @else {
-					@for (profile of profiles()?.data; track profile.id) {
+				</thead>
+				<tbody class="divide-y divide-[#3c3f68]">
+					@if (profiles() === undefined) {
 						<tr>
-							<td class="font-bold">{{ profile.name }}</td>
-							<td>{{ profile.description }}</td>
-							<td>{{ profile.updatedAt | date: "dd/MM/yyyy HH:mm" }}</td>
-							<td>
-								<div class="flex flex-wrap gap-1">
-									@for (opt of profile.options; track opt.id) {
-										<span class="bg-[#3c3f68] text-xs px-2 py-1 rounded text-gray-300">
-											{{ opt.name }}
-										</span>
-									}
-								</div>
-							</td>
-							<td>
-								<div class="flex justify-center gap-2">
-									<button class="btn-icon btn-edit" title="Editar">
-										<span class="material-icons">edit</span>
-									</button>
-									<button class="btn-icon btn-delete" title="Eliminar">
-										<span class="material-icons">delete</span>
-									</button>
-								</div>
+							<td colspan="5" class="text-center py-10">
+								<span class="material-icons spinner text-blue-400">sync</span>
 							</td>
 						</tr>
-					} @empty {
-						<tr>
-							<td colspan="5" class="text-center py-10 text-gray-400">Sin registros</td>
-						</tr>
+					} @else {
+						@for (profile of profiles()?.data; track profile.id) {
+							<tr class="hover:bg-[#282c4d] transition-colors group">
+								<td class="px-6 py-4 text-white font-medium">{{ profile.name }}</td>
+								<td class="px-6 py-4 text-gray-400 text-sm">{{ profile.description }}</td>
+								<td class="px-6 py-4 text-gray-400 text-sm">{{ profile.updatedAt | date: "dd/MM/yyyy HH:mm" }}</td>
+								<td class="px-6 py-4">
+									<div class="flex flex-wrap gap-1 max-w-xs">
+										@for (opt of profile.options; track opt.id) {
+											<span class="px-2 py-0.5 bg-[#3c3f68] text-blue-400 text-[10px] rounded border border-blue-400/30">
+												{{ opt.name }}
+											</span>
+										}
+									</div>
+								</td>
+								<td class="px-6 py-4">
+									<div class="flex justify-center gap-2">
+										<button (click)="openModal(profile)" class="btn-icon btn-edit" title="Editar">
+											<span class="material-icons text-[18px]">edit</span>
+										</button>
+										<button class="btn-icon btn-delete" title="Eliminar">
+											<span class="material-icons text-[18px]">delete</span>
+										</button>
+									</div>
+								</td>
+							</tr>
+						} @empty {
+							<tr>
+								<td colspan="5" class="text-center py-10 text-gray-500 italic">Sin registros</td>
+							</tr>
+						}
 					}
-				}
-			</tbody>
-		</table>
+				</tbody>
+			</table>
+		</div>
 	</div>
 </div>
+
+@if (showModal()) {
+	<app-profile-modal [profile]="selectedProfile()" (closed)="onModalClosed($event)"></app-profile-modal>
+}

@@ -12,23 +12,30 @@ export type UserDb = {
 export let users: UserDb[] = [
 	{
 		id: 1,
-		name: "Administrador Sistema",
+		name: "Admin User",
 		email: "admin@angular.com",
 		password: "admin123",
 		profile: profiles[0]
 	},
 	{
 		id: 2,
-		name: "Soporte Técnico",
+		name: "Support User",
 		email: "soporte@angular.com",
 		password: "soporte123",
 		profile: profiles[1]
 	},
 	{
 		id: 3,
-		name: "Cliente Final",
+		name: "Client User",
 		email: "cliente@angular.com",
 		password: "cliente123",
 		profile: profiles[2]
+	},
+	{
+		id: 4,
+		name: "Support User 2",
+		email: "soporte2@angular.com",
+		password: "soporte123",
+		profile: profiles[1]
 	}
 ];

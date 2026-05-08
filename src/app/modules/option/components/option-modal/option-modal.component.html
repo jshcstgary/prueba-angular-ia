@@ -1,0 +1,75 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1c1f3b]/80 backdrop-blur-sm">
+	<div class="w-full max-w-lg bg-[#282c4d] rounded-2xl shadow-2xl border border-[#3c3f68] overflow-hidden">
+		<!-- Header -->
+		<div class="px-6 py-4 border-b border-[#3c3f68] flex justify-between items-center bg-[#1c1f3b]/30">
+			<h2 class="text-xl font-bold text-white">{{ option ? "Editar Opción" : "Nueva Opción" }}</h2>
+			<button (click)="onClose()" class="text-gray-400 hover:text-white transition-colors">
+				<span class="material-icons">close</span>
+			</button>
+		</div>
+
+		<!-- Body -->
+		<form [formGroup]="optionForm" (ngSubmit)="onSave()" class="p-6 space-y-6">
+			<div>
+				<label class="block text-sm font-medium text-gray-400 mb-2">Nombre de la Opción</label>
+				<input
+					type="text"
+					formControlName="name"
+					placeholder="Ej. Listado de Usuarios"
+					class="w-full bg-[#1c1f3b] border border-[#3c3f68] rounded-lg py-3 px-4 text-white focus:outline-none focus:border-blue-500 transition-colors"
+				/>
+			</div>
+
+			<div class="grid grid-cols-2 gap-4">
+				<div>
+					<label class="block text-sm font-medium text-gray-400 mb-2">Ruta (Path)</label>
+					<input
+						type="text"
+						formControlName="path"
+						placeholder="/users"
+						class="w-full bg-[#1c1f3b] border border-[#3c3f68] rounded-lg py-3 px-4 text-white focus:outline-none focus:border-blue-500 transition-colors"
+					/>
+				</div>
+				<div>
+					<label class="block text-sm font-medium text-gray-400 mb-2">Ícono (Material)</label>
+					<div class="relative">
+						<span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">{{ optionForm.get('icon')?.value }}</span>
+						<input
+							type="text"
+							formControlName="icon"
+							placeholder="people"
+							class="w-full bg-[#1c1f3b] border border-[#3c3f68] rounded-lg py-3 pl-12 pr-4 text-white focus:outline-none focus:border-blue-500 transition-colors"
+						/>
+					</div>
+				</div>
+			</div>
+
+			<div>
+				<label class="block text-sm font-medium text-gray-400 mb-2">Módulo Perteneciente</label>
+				<select
+					formControlName="moduleId"
+					class="w-full bg-[#1c1f3b] border border-[#3c3f68] rounded-lg py-3 px-4 text-white focus:outline-none focus:border-blue-500 transition-colors appearance-none"
+				>
+					<option [value]="0" disabled>Selecciona un módulo</option>
+					@for (module of modules()?.data; track module.id) {
+						<option [value]="module.id">{{ module.name }}</option>
+					}
+				</select>
+			</div>
+
+			<!-- Footer -->
+			<div class="pt-4 flex gap-3">
+				<button type="button" (click)="onClose()" class="flex-1 py-3 px-4 rounded-lg bg-[#3c3f68] text-white hover:bg-[#4d4d80] transition-colors">
+					Cancelar
+				</button>
+				<button
+					type="submit"
+					[disabled]="optionForm.invalid"
+					class="flex-1 btn-primary justify-center py-3 px-4 disabled:opacity-50 disabled:cursor-not-allowed"
+				>
+					Guardar
+				</button>
+			</div>
+		</form>
+	</div>
+</div>

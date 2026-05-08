@@ -1,57 +1,63 @@
-<div class="p-6">
-	<div class="flex justify-between items-center mb-6">
-		<h1 class="text-3xl font-bold">Módulos</h1>
-		<button class="btn-primary">
+<div class="p-8">
+	<div class="flex justify-between items-center mb-8">
+		<h1 class="text-3xl font-bold text-white">Módulos</h1>
+		<button (click)="openModal()" class="btn-primary">
 			<span class="material-icons">add</span>
 			Nuevo
 		</button>
 	</div>
 
-	<div class="card">
-		<table>
-			<thead>
-				<tr>
-					<th>Nombre</th>
-					<th>Descripción</th>
-					<th>Activo</th>
-					<th class="text-center">Acciones</th>
-				</tr>
-			</thead>
-			<tbody>
-				@if (modules() === undefined) {
-					<tr>
-						<td colspan="4" class="text-center py-10">
-							<span class="material-icons spinner">sync</span>
-						</td>
+	<div class="card overflow-hidden">
+		<div class="overflow-x-auto">
+			<table class="w-full text-left border-collapse">
+				<thead>
+					<tr class="bg-[#3c3f68] text-gray-300 uppercase text-xs tracking-wider">
+						<th class="px-6 py-4 font-semibold">Nombre</th>
+						<th class="px-6 py-4 font-semibold">Descripción</th>
+						<th class="px-6 py-4 font-semibold">Activo</th>
+						<th class="px-6 py-4 font-semibold text-center">Acciones</th>
 					</tr>
-				} @else {
-					@for (module of modules()?.data; track module.id) {
+				</thead>
+				<tbody class="divide-y divide-[#3c3f68]">
+					@if (modules() === undefined) {
 						<tr>
-							<td>{{ module.name }}</td>
-							<td>{{ module.description }}</td>
-							<td>
-								<span class="material-icons" [style.color]="module.active ? '#4ade80' : '#f87171'">
-									{{ module.active ? "check_circle" : "cancel" }}
-								</span>
-							</td>
-							<td>
-								<div class="flex justify-center gap-2">
-									<button class="btn-icon btn-edit" title="Editar">
-										<span class="material-icons">edit</span>
-									</button>
-									<button class="btn-icon btn-delete" title="Eliminar">
-										<span class="material-icons">delete</span>
-									</button>
-								</div>
+							<td colspan="4" class="text-center py-10">
+								<span class="material-icons spinner text-blue-400">sync</span>
 							</td>
 						</tr>
-					} @empty {
-						<tr>
-							<td colspan="4" class="text-center py-10 text-gray-400">Sin registros</td>
-						</tr>
+					} @else {
+						@for (module of modules()?.data; track module.id) {
+							<tr class="hover:bg-[#282c4d] transition-colors group">
+								<td class="px-6 py-4 text-white font-medium">{{ module.name }}</td>
+								<td class="px-6 py-4 text-gray-400 text-sm">{{ module.description }}</td>
+								<td class="px-6 py-4">
+									<span class="material-icons" [class.text-green-400]="module.active" [class.text-red-400]="!module.active">
+										{{ module.active ? "check_circle" : "cancel" }}
+									</span>
+								</td>
+								<td class="px-6 py-4">
+									<div class="flex justify-center gap-2">
+										<button (click)="openModal(module)" class="btn-icon btn-edit" title="Editar">
+											<span class="material-icons text-[18px]">edit</span>
+										</button>
+										<button class="btn-icon btn-delete" title="Eliminar">
+											<span class="material-icons text-[18px]">delete</span>
+										</button>
+									</div>
+								</td>
+							</tr>
+						} @empty {
+							<tr>
+								<td colspan="4" class="text-center py-10 text-gray-500 italic">Sin registros</td>
+							</tr>
+						}
 					}
-				}
-			</tbody>
-		</table>
+				</tbody>
+			</table>
+		</div>
 	</div>
 </div>
+
+@if (showModal()) {
+	<app-module-modal [module]="selectedModule()" (closed)="onModalClosed($event)"></app-module-modal>
+}

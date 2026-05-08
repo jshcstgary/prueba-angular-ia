@@ -1,0 +1,78 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1c1f3b]/80 backdrop-blur-sm">
+	<div class="w-full max-w-2xl bg-[#282c4d] rounded-2xl shadow-2xl border border-[#3c3f68] overflow-hidden">
+		<!-- Header -->
+		<div class="px-6 py-4 border-b border-[#3c3f68] flex justify-between items-center bg-[#1c1f3b]/30">
+			<h2 class="text-xl font-bold text-white">{{ profile ? "Editar Perfil" : "Nuevo Perfil" }}</h2>
+			<button (click)="onClose()" class="text-gray-400 hover:text-white transition-colors">
+				<span class="material-icons">close</span>
+			</button>
+		</div>
+
+		<!-- Body -->
+		<form [formGroup]="profileForm" (ngSubmit)="onSave()" class="p-6 space-y-6">
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+				<div class="space-y-6">
+					<div>
+						<label class="block text-sm font-medium text-gray-400 mb-2">Nombre del Perfil</label>
+						<input
+							type="text"
+							formControlName="name"
+							placeholder="Ej. Administrador"
+							class="w-full bg-[#1c1f3b] border border-[#3c3f68] rounded-lg py-3 px-4 text-white focus:outline-none focus:border-blue-500 transition-colors"
+						/>
+					</div>
+					<div>
+						<label class="block text-sm font-medium text-gray-400 mb-2">Descripción</label>
+						<textarea
+							formControlName="description"
+							placeholder="Responsabilidades del perfil..."
+							rows="4"
+							class="w-full bg-[#1c1f3b] border border-[#3c3f68] rounded-lg py-3 px-4 text-white focus:outline-none focus:border-blue-500 transition-colors resize-none"
+						></textarea>
+					</div>
+				</div>
+
+				<div>
+					<label class="block text-sm font-medium text-gray-400 mb-2">Asignar Opciones</label>
+					<div class="bg-[#1c1f3b] border border-[#3c3f68] rounded-lg p-4 h-[240px] overflow-y-auto space-y-2">
+						@for (option of options()?.data; track option.id) {
+							<div
+								(click)="toggleOption(option.id)"
+								class="flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-colors"
+								[class.bg-[#3c3f68]]="profileForm.get('optionIds')!.value.includes(option.id)"
+								[class.hover:bg-[#3c3f68]/50]="!profileForm.get('optionIds')!.value.includes(option.id)"
+							>
+								<span class="material-icons text-sm" [class.text-blue-400]="profileForm.get('optionIds')!.value.includes(option.id)">
+									{{ profileForm.get('optionIds')!.value.includes(option.id) ? "check_box" : "check_box_outline_blank" }}
+								</span>
+								<div class="flex-1">
+									<div class="text-sm text-white">{{ option.name }}</div>
+									<div class="text-[10px] text-gray-500">{{ option.module.name }}</div>
+								</div>
+							</div>
+						} @empty {
+							<div class="text-center text-gray-500 py-10 italic">No hay opciones disponibles</div>
+						}
+					</div>
+					@if (profileForm.get('optionIds')?.invalid && profileForm.get('optionIds')?.touched) {
+						<div class="text-red-400 text-xs mt-1">Debes seleccionar al menos una opción</div>
+					}
+				</div>
+			</div>
+
+			<!-- Footer -->
+			<div class="pt-4 flex gap-3">
+				<button type="button" (click)="onClose()" class="flex-1 py-3 px-4 rounded-lg bg-[#3c3f68] text-white hover:bg-[#4d4d80] transition-colors">
+					Cancelar
+				</button>
+				<button
+					type="submit"
+					[disabled]="profileForm.invalid"
+					class="flex-1 btn-primary justify-center py-3 px-4 disabled:opacity-50 disabled:cursor-not-allowed"
+				>
+					Guardar
+				</button>
+			</div>
+		</form>
+	</div>
+</div>

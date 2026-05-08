@@ -7,6 +7,7 @@ export const environment = {
 		option: "/options",
 		profile: "/profiles",
 		user: "/users",
-		auth: "/auth"
+		auth: "/auth",
+		ticket: "/tickets"
 	}
 };

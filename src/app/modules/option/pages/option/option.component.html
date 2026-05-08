@@ -1,57 +1,63 @@
-<div class="p-6">
-	<div class="flex justify-between items-center mb-6">
-		<h1 class="text-3xl font-bold">Opciones</h1>
-		<button class="btn-primary">
+<div class="p-8">
+	<div class="flex justify-between items-center mb-8">
+		<h1 class="text-3xl font-bold text-white">Opciones</h1>
+		<button (click)="openModal()" class="btn-primary">
 			<span class="material-icons">add</span>
 			Nuevo
 		</button>
 	</div>
 
-	<div class="card">
-		<table>
-			<thead>
-				<tr>
-					<th>Nombre</th>
-					<th>Ruta</th>
-					<th>Ícono</th>
-					<th>Módulo</th>
-					<th class="text-center">Acciones</th>
-				</tr>
-			</thead>
-			<tbody>
-				@if (options() === undefined) {
-					<tr>
-						<td colspan="5" class="text-center py-10">
-							<span class="material-icons spinner">sync</span>
-						</td>
+	<div class="card overflow-hidden">
+		<div class="overflow-x-auto">
+			<table class="w-full text-left border-collapse">
+				<thead>
+					<tr class="bg-[#3c3f68] text-gray-300 uppercase text-xs tracking-wider">
+						<th class="px-6 py-4 font-semibold">Nombre</th>
+						<th class="px-6 py-4 font-semibold">Ruta</th>
+						<th class="px-6 py-4 font-semibold">Ícono</th>
+						<th class="px-6 py-4 font-semibold">Módulo</th>
+						<th class="px-6 py-4 font-semibold text-center">Acciones</th>
 					</tr>
-				} @else {
-					@for (option of options()?.data; track option.id) {
+				</thead>
+				<tbody class="divide-y divide-[#3c3f68]">
+					@if (options() === undefined) {
 						<tr>
-							<td>{{ option.name }}</td>
-							<td><code>{{ option.path }}</code></td>
-							<td>
-								<span class="material-icons">{{ option.icon }}</span>
-							</td>
-							<td>{{ option.module.name }}</td>
-							<td>
-								<div class="flex justify-center gap-2">
-									<button class="btn-icon btn-edit" title="Editar">
-										<span class="material-icons">edit</span>
-									</button>
-									<button class="btn-icon btn-delete" title="Eliminar">
-										<span class="material-icons">delete</span>
-									</button>
-								</div>
+							<td colspan="5" class="text-center py-10">
+								<span class="material-icons spinner text-blue-400">sync</span>
 							</td>
 						</tr>
-					} @empty {
-						<tr>
-							<td colspan="5" class="text-center py-10 text-gray-400">Sin registros</td>
-						</tr>
+					} @else {
+						@for (option of options()?.data; track option.id) {
+							<tr class="hover:bg-[#282c4d] transition-colors group">
+								<td class="px-6 py-4 text-white font-medium">{{ option.name }}</td>
+								<td class="px-6 py-4 text-gray-400 text-sm">{{ option.path }}</td>
+								<td class="px-6 py-4">
+									<span class="material-icons text-gray-400">{{ option.icon }}</span>
+								</td>
+								<td class="px-6 py-4 text-gray-400 text-sm">{{ option.module.name }}</td>
+								<td class="px-6 py-4">
+									<div class="flex justify-center gap-2">
+										<button (click)="openModal(option)" class="btn-icon btn-edit" title="Editar">
+											<span class="material-icons text-[18px]">edit</span>
+										</button>
+										<button class="btn-icon btn-delete" title="Eliminar">
+											<span class="material-icons text-[18px]">delete</span>
+										</button>
+									</div>
+								</td>
+							</tr>
+						} @empty {
+							<tr>
+								<td colspan="5" class="text-center py-10 text-gray-500 italic">Sin registros</td>
+							</tr>
+						}
 					}
-				}
-			</tbody>
-		</table>
+				</tbody>
+			</table>
+		</div>
 	</div>
 </div>
+
+@if (showModal()) {
+	<app-option-modal [option]="selectedOption()" (closed)="onModalClosed($event)"></app-option-modal>
+}

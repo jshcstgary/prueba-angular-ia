@@ -1,0 +1,76 @@
+<div class="modal-overlay">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h3 class="text-xl font-bold text-white">{{ isViewOnly ? 'Ver Ticket' : 'Nuevo Ticket' }}</h3>
+		</div>
+
+		<form [formGroup]="ticketForm" (ngSubmit)="onSave()">
+			<div class="modal-body">
+				<!-- Título -->
+				<div class="form-group">
+					<label>Título</label>
+					<input
+						type="text"
+						formControlName="title"
+						class="form-control"
+						placeholder="Asunto breve del ticket"
+					/>
+				</div>
+
+				<!-- Descripción -->
+				<div class="form-group">
+					<label>Descripción</label>
+					<textarea
+						formControlName="description"
+						class="form-control"
+						rows="3"
+						placeholder="Detalle del problema o requerimiento"
+					></textarea>
+				</div>
+
+				<div class="grid grid-cols-2 gap-4">
+					<!-- Prioridad -->
+					<div class="form-group">
+						<label>Prioridad</label>
+						<select formControlName="priority" class="form-control">
+							@for (p of priorities; track p) {
+								<option [value]="p">{{ p }}</option>
+							}
+						</select>
+					</div>
+
+					<!-- Asignar a (Soporte) -->
+					<div class="form-group">
+						<label>Asignar a</label>
+						<select formControlName="assignedToId" class="form-control">
+							<option [value]="0" disabled>Seleccione...</option>
+							@for (user of supportUsers()?.data; track user.id) {
+								<option [value]="user.id">{{ user.name }}</option>
+							}
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				@if (isViewOnly) {
+					<button type="button" class="btn-primary" (click)="onCancel()">
+						Cerrar
+					</button>
+				} @else {
+					<button type="button" class="btn-cancel" (click)="onCancel()" [disabled]="isSubmitting()">
+						Cancelar
+					</button>
+					<button type="submit" class="btn-primary" [disabled]="ticketForm.invalid || isSubmitting()">
+						@if (isSubmitting()) {
+							<span class="material-icons spinner text-sm">sync</span>
+						} @else {
+							<span class="material-icons">save</span>
+						}
+						Crear Ticket
+					</button>
+				}
+			</div>
+		</form>
+	</div>
+</div>

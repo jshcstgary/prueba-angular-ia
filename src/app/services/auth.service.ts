@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable, inject, signal } from "@angular/core";
+import { Router } from "@angular/router";
 import { Observable, tap } from "rxjs";
 import { environment } from "../../environments/environment";
 import { ApiResponse, User, UserCredentials, UserCreate } from "../types";
@@ -34,10 +35,11 @@ export class AuthService {
 		);
 	}
 
+	private readonly router = inject(Router);
+
 	public logout(): void {
 		localStorage.removeItem("jwt");
-		localStorage.removeItem("user");
-		this._user.set(null);
+		this.router.navigate(["/auth"]);
 	}
 
 	public getToken(): string | null {

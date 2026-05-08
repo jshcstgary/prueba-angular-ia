@@ -7,8 +7,17 @@ const url = `${environment.baseUrl}${environment.urlPrefix}${environment.path.us
 
 export const userHandlers = [
 	// GetAll
-	http.get(url, () => {
-		const responseData: User[] = users.map(({ password, ...rest }) => ({
+	http.get(url, ({ request }) => {
+		const urlObj = new URL(request.url);
+		const profileId = urlObj.searchParams.get("profileId");
+
+		let filteredUsers = users;
+
+		if (profileId) {
+			filteredUsers = users.filter((u) => u.profile.id === Number(profileId));
+		}
+
+		const responseData: User[] = filteredUsers.map(({ password, ...rest }) => ({
 			...rest,
 			jwt: "mock-jwt"
 		}));
