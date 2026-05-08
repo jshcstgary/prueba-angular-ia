@@ -2,6 +2,7 @@ import { http, HttpResponse } from "msw";
 import { environment } from "../../environments/environment";
 import { Ticket, TicketCreate, TicketUpdate, ApiResponse, User } from "../../app/types";
 import { tickets, users } from "../db";
+import { saveToStorage } from "../db/persistence.utils";
 
 const url = `${environment.baseUrl}${environment.urlPrefix}${environment.path.ticket}`;
 
@@ -17,11 +18,7 @@ export const ticketHandlers = [
 			filteredTickets = tickets.filter((t) => t.assignedTo.id === Number(assignedToId));
 		}
 
-		const response: ApiResponse<Ticket[]> = {
-			status: "success",
-			data: filteredTickets
-		};
-		return HttpResponse.json(response, { status: 200 });
+		return HttpResponse.json({ status: "success", data: filteredTickets }, { status: 200 });
 	}),
 
 	// GetById
@@ -30,18 +27,10 @@ export const ticketHandlers = [
 		const ticket = tickets.find((t) => t.id === id);
 
 		if (!ticket) {
-			const response: ApiResponse<null> = {
-				status: "Error: Ticket no encontrado",
-				data: null
-			};
-			return HttpResponse.json(response, { status: 404 });
+			return HttpResponse.json({ status: "Error: Ticket no encontrado", data: null }, { status: 404 });
 		}
 
-		const response: ApiResponse<Ticket> = {
-			status: "success",
-			data: ticket
-		};
-		return HttpResponse.json(response, { status: 200 });
+		return HttpResponse.json({ status: "success", data: ticket }, { status: 200 });
 	}),
 
 	// Create
@@ -49,19 +38,16 @@ export const ticketHandlers = [
 		try {
 			const body = (await request.json()) as TicketCreate;
 
-			// Validate Creator User
 			const creatorDb = users.find((u) => u.id === body.userId);
 			if (!creatorDb) {
 				return HttpResponse.json({ status: "Error: El usuario creador no existe", data: null }, { status: 404 });
 			}
 
-			// Validate Assigned User
 			const assignedDb = users.find((u) => u.id === body.assignedToId);
 			if (!assignedDb) {
 				return HttpResponse.json({ status: "Error: El usuario asignado no existe", data: null }, { status: 404 });
 			}
 
-			// Map to User type (no password)
 			const { password: _, ...creatorRest } = creatorDb;
 			const creator: User = { ...creatorRest, jwt: "mock-jwt" };
 
@@ -81,12 +67,9 @@ export const ticketHandlers = [
 			};
 
 			tickets.push(newTicket);
+			saveToStorage("tickets", tickets);
 
-			const response: ApiResponse<Ticket> = {
-				status: "success",
-				data: newTicket
-			};
-			return HttpResponse.json(response, { status: 201 });
+			return HttpResponse.json({ status: "success", data: newTicket }, { status: 201 });
 		} catch (error) {
 			return HttpResponse.json({ status: "Error: Datos inválidos", data: null }, { status: 400 });
 		}
@@ -103,17 +86,10 @@ export const ticketHandlers = [
 				return HttpResponse.json({ status: "Error: Ticket no existe", data: null }, { status: 404 });
 			}
 
-			tickets[index] = {
-				...body,
-				id,
-				updatedAt: new Date()
-			};
+			tickets[index] = { ...body, id, updatedAt: new Date() };
+			saveToStorage("tickets", tickets);
 
-			const response: ApiResponse<Ticket> = {
-				status: "success",
-				data: tickets[index]
-			};
-			return HttpResponse.json(response, { status: 200 });
+			return HttpResponse.json({ status: "success", data: tickets[index] }, { status: 200 });
 		} catch (error) {
 			return HttpResponse.json({ status: "Error: Datos inválidos", data: null }, { status: 400 });
 		}
@@ -128,11 +104,10 @@ export const ticketHandlers = [
 			return HttpResponse.json({ status: "Error: Ticket no existe", data: null }, { status: 404 });
 		}
 
-		const deletedTicket = tickets.splice(index, 1)[0];
-		const response: ApiResponse<boolean> = {
-			status: "success",
-			data: true
-		};
-		return HttpResponse.json(response, { status: 200 });
+		tickets.splice(index, 1);
+		saveToStorage("tickets", tickets);
+
+		return HttpResponse.json({ status: "success", data: true }, { status: 200 });
 	})
 ];
+

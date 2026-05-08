@@ -1,13 +1,15 @@
 import { Ticket } from "../../app/types/ticket.type";
 import { users } from "./user.db";
+import { loadFromStorage } from "./persistence.utils";
 
 // Map UserDb to User for mock data (removing password)
 const getMockUser = (index: number) => {
+	if (!users[index]) return null;
 	const { password, ...rest } = users[index];
 	return { ...rest, jwt: "mock-jwt" };
 };
 
-export let tickets: Ticket[] = [
+const initialData: Ticket[] = [
 	{
 		id: 1,
 		title: "Error al cargar el perfil",
@@ -16,8 +18,8 @@ export let tickets: Ticket[] = [
 		priority: "High",
 		createdAt: new Date(),
 		updatedAt: new Date(),
-		user: getMockUser(0),
-		assignedTo: getMockUser(1)
+		user: getMockUser(0)!,
+		assignedTo: getMockUser(1)!
 	},
 	{
 		id: 2,
@@ -27,7 +29,9 @@ export let tickets: Ticket[] = [
 		priority: "Medium",
 		createdAt: new Date(),
 		updatedAt: new Date(),
-		user: getMockUser(1),
-		assignedTo: getMockUser(3)
+		user: getMockUser(1)!,
+		assignedTo: getMockUser(3)!
 	}
 ];
+
+export let tickets: Ticket[] = loadFromStorage("tickets", initialData);

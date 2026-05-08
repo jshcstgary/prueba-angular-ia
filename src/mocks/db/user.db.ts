@@ -1,5 +1,6 @@
 import { Profile } from "../../app/types";
 import { profiles } from "./profile.db";
+import { loadFromStorage } from "./persistence.utils";
 
 export type UserDb = {
 	id: number;
@@ -9,7 +10,7 @@ export type UserDb = {
 	profile: Profile;
 };
 
-export let users: UserDb[] = [
+const initialData: UserDb[] = [
 	{
 		id: 1,
 		name: "Admin User",
@@ -39,3 +40,5 @@ export let users: UserDb[] = [
 		profile: profiles[1]
 	}
 ];
+
+export let users: UserDb[] = loadFromStorage("users", initialData);

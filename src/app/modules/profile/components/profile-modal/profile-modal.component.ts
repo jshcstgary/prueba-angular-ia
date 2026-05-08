@@ -55,8 +55,9 @@ export class ProfileModalComponent implements OnInit {
 		if (this.profile) {
 			// Update
 			const updatedProfile: ProfileUpdate = { 
-				...this.profile,
 				...formValue,
+				id: this.profile.id,
+				createdAt: this.profile.createdAt,
 				updatedAt: new Date()
 			};
 			this.profileService.update(updatedProfile).subscribe({

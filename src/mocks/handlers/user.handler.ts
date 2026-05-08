@@ -2,6 +2,7 @@ import { http, HttpResponse } from "msw";
 import { environment } from "../../environments/environment";
 import { User, UserCreate, UserUpdate, ApiResponse } from "../../app/types";
 import { users, profiles } from "../db";
+import { saveToStorage } from "../db/persistence.utils";
 
 const url = `${environment.baseUrl}${environment.urlPrefix}${environment.path.user}`;
 
@@ -22,12 +23,7 @@ export const userHandlers = [
 			jwt: "mock-jwt"
 		}));
 
-		const response: ApiResponse<User[]> = {
-			status: "success",
-			data: responseData
-		};
-
-		return HttpResponse.json(response, { status: 200 });
+		return HttpResponse.json({ status: "success", data: responseData }, { status: 200 });
 	}),
 
 	// GetById
@@ -36,22 +32,13 @@ export const userHandlers = [
 		const user = users.find((u) => u.id === id);
 
 		if (!user) {
-			const response: ApiResponse<null> = {
-				status: "Error: no existe",
-				data: null
-			};
-			return HttpResponse.json(response, { status: 404 });
+			return HttpResponse.json({ status: "Error: no existe", data: null }, { status: 404 });
 		}
 
 		const { password, ...rest } = user;
 		const responseData: User = { ...rest, jwt: "mock-jwt" };
 
-		const response: ApiResponse<User> = {
-			status: "success",
-			data: responseData
-		};
-
-		return HttpResponse.json(response, { status: 200 });
+		return HttpResponse.json({ status: "success", data: responseData }, { status: 200 });
 	}),
 
 	// Update
@@ -62,49 +49,29 @@ export const userHandlers = [
 			const index = users.findIndex((u) => u.id === id);
 
 			if (index === -1) {
-				const response: ApiResponse<null> = {
-					status: "Error: no existe",
-					data: null
-				};
-				return HttpResponse.json(response, { status: 404 });
+				return HttpResponse.json({ status: "Error: no existe", data: null }, { status: 404 });
 			}
 
 			const profile = profiles.find((p) => p.id === body.profileId);
 			if (!profile) {
-				const response: ApiResponse<null> = {
-					status: "Error: Perfil no existe",
-					data: null
-				};
-				return HttpResponse.json(response, { status: 404 });
+				return HttpResponse.json({ status: "Error: Perfil no existe", data: null }, { status: 404 });
 			}
 
 			const exists = users.some((u) => u.email.toLowerCase() === body.email.toLowerCase() && u.id !== id);
 			if (exists) {
-				const response: ApiResponse<null> = {
-					status: "Error: Email ya existe",
-					data: null
-				};
-				return HttpResponse.json(response, { status: 400 });
+				return HttpResponse.json({ status: "Error: Email ya existe", data: null }, { status: 400 });
 			}
 
 			const { profileId, ...rest } = body;
 			users[index] = { ...users[index], ...rest, profile, id };
+			saveToStorage("users", users);
 
 			const { password, ...userRest } = users[index];
 			const responseData: User = { ...userRest, jwt: "mock-jwt" };
 
-			const response: ApiResponse<User> = {
-				status: "success",
-				data: responseData
-			};
-
-			return HttpResponse.json(response, { status: 200 });
+			return HttpResponse.json({ status: "success", data: responseData }, { status: 200 });
 		} catch (error) {
-			const response: ApiResponse<null> = {
-				status: "Error: Datos inválidos",
-				data: null
-			};
-			return HttpResponse.json(response, { status: 400 });
+			return HttpResponse.json({ status: "Error: Datos inválidos", data: null }, { status: 400 });
 		}
 	}),
 
@@ -114,22 +81,16 @@ export const userHandlers = [
 		const index = users.findIndex((u) => u.id === id);
 
 		if (index === -1) {
-			const response: ApiResponse<null> = {
-				status: "Error: no existe",
-				data: null
-			};
-			return HttpResponse.json(response, { status: 404 });
+			return HttpResponse.json({ status: "Error: no existe", data: null }, { status: 404 });
 		}
 
 		const deletedUser = users.splice(index, 1)[0];
+		saveToStorage("users", users);
+
 		const { password, ...rest } = deletedUser;
 		const responseData: User = { ...rest, jwt: "mock-jwt" };
 
-		const response: ApiResponse<User> = {
-			status: "success",
-			data: responseData
-		};
-
-		return HttpResponse.json(response, { status: 200 });
+		return HttpResponse.json({ status: "success", data: responseData }, { status: 200 });
 	})
 ];
+

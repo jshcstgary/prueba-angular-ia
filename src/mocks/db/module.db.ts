@@ -1,6 +1,7 @@
 import { Module } from "../../app/types";
+import { loadFromStorage } from "./persistence.utils";
 
-export let modules: Module[] = [
+const initialData: Module[] = [
 	{
 		id: 1,
 		name: "Mantenedores",
@@ -20,3 +21,5 @@ export let modules: Module[] = [
 		active: true
 	}
 ];
+
+export let modules: Module[] = loadFromStorage("modules", initialData);

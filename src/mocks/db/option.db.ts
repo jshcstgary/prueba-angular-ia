@@ -1,7 +1,8 @@
 import { Option } from "../../app/types";
 import { modules } from "./module.db";
+import { loadFromStorage } from "./persistence.utils";
 
-export let options: Option[] = [
+const initialData: Option[] = [
 	{
 		id: 1,
 		name: "Módulos",
@@ -38,3 +39,5 @@ export let options: Option[] = [
 		module: modules[2]
 	}
 ];
+
+export let options: Option[] = loadFromStorage("options", initialData);

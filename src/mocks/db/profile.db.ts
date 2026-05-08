@@ -1,7 +1,8 @@
 import { Profile } from "../../app/types";
 import { options } from "./option.db";
+import { loadFromStorage } from "./persistence.utils";
 
-export let profiles: Profile[] = [
+const initialData: Profile[] = [
 	{
 		id: 1,
 		name: "Admin",
@@ -27,3 +28,5 @@ export let profiles: Profile[] = [
 		options: [options[3]]
 	}
 ];
+
+export let profiles: Profile[] = loadFromStorage("profiles", initialData);
