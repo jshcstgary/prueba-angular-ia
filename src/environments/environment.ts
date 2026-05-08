@@ -5,6 +5,8 @@ export const environment = {
 	path: {
 		module: "/modules",
 		option: "/options",
-		profile: "/profiles"
+		profile: "/profiles",
+		user: "/users",
+		auth: "/auth"
 	}
 };

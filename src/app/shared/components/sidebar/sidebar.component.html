@@ -1,39 +1,40 @@
-<aside class="w-64 bg-[#282c4d] border-r border-[#3c3f68] flex flex-col h-full">
+<aside class="w-64 bg-[#282c4d] border-r border-[#3c3f68] flex flex-col h-full overflow-y-auto">
 	<div class="p-6">
 		<h2 class="text-2xl font-bold text-white flex items-center gap-2">
 			<span class="material-icons text-blue-400">dashboard</span>
 			Admin
 		</h2>
 	</div>
-	<nav class="flex-1 px-4 space-y-2 py-4">
-		<a
-			routerLink="/modules"
-			routerLinkActive="bg-[#3c3f68] text-white"
-			class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#3c3f68] hover:text-white transition-colors"
-		>
-			<span class="material-icons">view_module</span>
-			Módulos
-		</a>
-		<a
-			routerLink="/options"
-			routerLinkActive="bg-[#3c3f68] text-white"
-			class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#3c3f68] hover:text-white transition-colors"
-		>
-			<span class="material-icons">settings</span>
-			Opciones
-		</a>
-		<a
-			routerLink="/profiles"
-			routerLinkActive="bg-[#3c3f68] text-white"
-			class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#3c3f68] hover:text-white transition-colors"
-		>
-			<span class="material-icons">admin_panel_settings</span>
-			Perfiles
-		</a>
+
+	<nav class="flex-1 px-4 space-y-6 py-4">
+		@for (group of groupedOptions(); track group.module.id) {
+			<div class="space-y-2">
+				<p class="text-xs font-bold uppercase tracking-wider text-gray-500 px-4">
+					{{ group.module.name }}
+				</p>
+				<div class="space-y-1">
+					@for (option of group.options; track option.id) {
+						<a
+							[routerLink]="option.path"
+							routerLinkActive="bg-[#3c3f68] text-white"
+							class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-400 hover:bg-[#3c3f68] hover:text-white transition-colors"
+						>
+							<span class="material-icons text-[20px]">{{ option.icon }}</span>
+							<span class="text-sm font-medium">{{ option.name }}</span>
+						</a>
+					}
+				</div>
+			</div>
+		} @empty {
+			<div class="px-4 text-gray-500 text-sm italic">No hay opciones disponibles</div>
+		}
 	</nav>
 
 	<div class="p-4 border-t border-[#3c3f68]">
-		<button class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors">
+		<button
+			(click)="logout()"
+			class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors"
+		>
 			<span class="material-icons">logout</span>
 			Cerrar sesión
 		</button>
