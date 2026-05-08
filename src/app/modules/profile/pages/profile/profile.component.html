@@ -15,12 +15,13 @@
 					<th>Descripción</th>
 					<th>Última Modificación</th>
 					<th>Opciones</th>
+					<th class="text-center">Acciones</th>
 				</tr>
 			</thead>
 			<tbody>
-				@if (profiles() === null) {
+				@if (profiles() === undefined) {
 					<tr>
-						<td colspan="4" class="text-center py-10">
+						<td colspan="5" class="text-center py-10">
 							<span class="material-icons spinner">sync</span>
 						</td>
 					</tr>
@@ -39,10 +40,20 @@
 									}
 								</div>
 							</td>
+							<td>
+								<div class="flex justify-center gap-2">
+									<button class="btn-icon btn-edit" title="Editar">
+										<span class="material-icons">edit</span>
+									</button>
+									<button class="btn-icon btn-delete" title="Eliminar">
+										<span class="material-icons">delete</span>
+									</button>
+								</div>
+							</td>
 						</tr>
 					} @empty {
 						<tr>
-							<td colspan="4" class="text-center py-10 text-gray-400">Sin registros</td>
+							<td colspan="5" class="text-center py-10 text-gray-400">Sin registros</td>
 						</tr>
 					}
 				}

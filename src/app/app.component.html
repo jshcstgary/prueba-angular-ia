@@ -1,42 +1,14 @@
 <div class="flex h-screen overflow-hidden">
 	<!-- Sidebar -->
-	<aside class="w-64 bg-[#282c4d] border-r border-[#3c3f68] flex flex-col">
-		<div class="p-6">
-			<h2 class="text-2xl font-bold text-white flex items-center gap-2">
-				<span class="material-icons text-blue-400">dashboard</span>
-				Admin
-			</h2>
-		</div>
-		<nav class="flex-1 px-4 space-y-2 py-4">
-			<a
-				routerLink="/modules"
-				routerLinkActive="bg-[#3c3f68] text-white"
-				class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#3c3f68] hover:text-white transition-colors"
-			>
-				<span class="material-icons">view_module</span>
-				Módulos
-			</a>
-			<a
-				routerLink="/options"
-				routerLinkActive="bg-[#3c3f68] text-white"
-				class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#3c3f68] hover:text-white transition-colors"
-			>
-				<span class="material-icons">settings</span>
-				Opciones
-			</a>
-			<a
-				routerLink="/profiles"
-				routerLinkActive="bg-[#3c3f68] text-white"
-				class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#3c3f68] hover:text-white transition-colors"
-			>
-				<span class="material-icons">admin_panel_settings</span>
-				Perfiles
-			</a>
-		</nav>
-	</aside>
+	<app-sidebar></app-sidebar>
 
-	<!-- Main Content -->
-	<main class="flex-1 overflow-y-auto bg-[#1c1f3b]">
-		<router-outlet />
-	</main>
+	<div class="flex-1 flex flex-col overflow-hidden">
+		<!-- Header -->
+		<app-header></app-header>
+
+		<!-- Main Content -->
+		<main class="flex-1 overflow-y-auto bg-[#1c1f3b]">
+			<router-outlet></router-outlet>
+		</main>
+	</div>
 </div>

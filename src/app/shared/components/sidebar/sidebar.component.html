@@ -1,0 +1,41 @@
+<aside class="w-64 bg-[#282c4d] border-r border-[#3c3f68] flex flex-col h-full">
+	<div class="p-6">
+		<h2 class="text-2xl font-bold text-white flex items-center gap-2">
+			<span class="material-icons text-blue-400">dashboard</span>
+			Admin
+		</h2>
+	</div>
+	<nav class="flex-1 px-4 space-y-2 py-4">
+		<a
+			routerLink="/modules"
+			routerLinkActive="bg-[#3c3f68] text-white"
+			class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#3c3f68] hover:text-white transition-colors"
+		>
+			<span class="material-icons">view_module</span>
+			Módulos
+		</a>
+		<a
+			routerLink="/options"
+			routerLinkActive="bg-[#3c3f68] text-white"
+			class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#3c3f68] hover:text-white transition-colors"
+		>
+			<span class="material-icons">settings</span>
+			Opciones
+		</a>
+		<a
+			routerLink="/profiles"
+			routerLinkActive="bg-[#3c3f68] text-white"
+			class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#3c3f68] hover:text-white transition-colors"
+		>
+			<span class="material-icons">admin_panel_settings</span>
+			Perfiles
+		</a>
+	</nav>
+
+	<div class="p-4 border-t border-[#3c3f68]">
+		<button class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors">
+			<span class="material-icons">logout</span>
+			Cerrar sesión
+		</button>
+	</div>
+</aside>

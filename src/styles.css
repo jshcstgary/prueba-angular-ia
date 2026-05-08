@@ -71,3 +71,29 @@ td {
 	from { transform: rotate(0deg); }
 	to { transform: rotate(360deg); }
 }
+
+.btn-icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 6px;
+	border-radius: 8px;
+	border: none;
+	cursor: pointer;
+	transition: opacity 0.2s;
+}
+
+.btn-icon:hover {
+	opacity: 0.8;
+}
+
+.btn-edit {
+	background-color: #f59e0b; /* Orange */
+	color: white;
+}
+
+.btn-delete {
+	background-color: #ef4444; /* Red */
+	color: white;
+}
+
