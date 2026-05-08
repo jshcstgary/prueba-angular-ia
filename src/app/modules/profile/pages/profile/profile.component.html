@@ -1,0 +1,52 @@
+<div class="p-6">
+	<div class="flex justify-between items-center mb-6">
+		<h1 class="text-3xl font-bold">Perfiles</h1>
+		<button class="btn-primary">
+			<span class="material-icons">add</span>
+			Nuevo
+		</button>
+	</div>
+
+	<div class="card">
+		<table>
+			<thead>
+				<tr>
+					<th>Nombre</th>
+					<th>Descripción</th>
+					<th>Última Modificación</th>
+					<th>Opciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				@if (profiles() === null) {
+					<tr>
+						<td colspan="4" class="text-center py-10">
+							<span class="material-icons spinner">sync</span>
+						</td>
+					</tr>
+				} @else {
+					@for (profile of profiles()?.data; track profile.id) {
+						<tr>
+							<td class="font-bold">{{ profile.name }}</td>
+							<td>{{ profile.description }}</td>
+							<td>{{ profile.updatedAt | date: "dd/MM/yyyy HH:mm" }}</td>
+							<td>
+								<div class="flex flex-wrap gap-1">
+									@for (opt of profile.options; track opt.id) {
+										<span class="bg-[#3c3f68] text-xs px-2 py-1 rounded text-gray-300">
+											{{ opt.name }}
+										</span>
+									}
+								</div>
+							</td>
+						</tr>
+					} @empty {
+						<tr>
+							<td colspan="4" class="text-center py-10 text-gray-400">Sin registros</td>
+						</tr>
+					}
+				}
+			</tbody>
+		</table>
+	</div>
+</div>

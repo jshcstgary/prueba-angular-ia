@@ -1,3 +1,73 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import "tailwindcss";
+
+:root {
+	--mirage: #1c1f3b;
+	--martinique: #282c4d;
+	--fiord: #3c3f68;
+	--east-bay: #4d4d80;
+	--mid-gray: #606271;
+	--white: #ffffff;
+}
+
+body {
+	background-color: var(--mirage);
+	color: var(--white);
+	font-family: "Inter", sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+.card {
+	background-color: var(--martinique);
+	border-radius: 12px;
+	padding: 24px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-primary {
+	background-color: var(--east-bay);
+	color: white;
+	padding: 8px 16px;
+	border-radius: 8px;
+	border: none;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+	background-color: var(--fiord);
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 20px;
+}
+
+th {
+	text-align: left;
+	padding: 12px;
+	border-bottom: 2px solid var(--fiord);
+	color: var(--mid-gray);
+	font-size: 0.9rem;
+	text-transform: uppercase;
+}
+
+td {
+	padding: 16px 12px;
+	border-bottom: 1px solid var(--fiord);
+	font-size: 1rem;
+}
+
+.spinner {
+	animation: rotate 1s linear infinite;
+	font-size: 2rem;
+}
+
+@keyframes rotate {
+	from { transform: rotate(0deg); }
+	to { transform: rotate(360deg); }
+}

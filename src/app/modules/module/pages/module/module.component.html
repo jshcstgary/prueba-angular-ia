@@ -1,0 +1,46 @@
+<div class="p-6">
+	<div class="flex justify-between items-center mb-6">
+		<h1 class="text-3xl font-bold">Módulos</h1>
+		<button class="btn-primary">
+			<span class="material-icons">add</span>
+			Nuevo
+		</button>
+	</div>
+
+	<div class="card">
+		<table>
+			<thead>
+				<tr>
+					<th>Nombre</th>
+					<th>Descripción</th>
+					<th>Activo</th>
+				</tr>
+			</thead>
+			<tbody>
+				@if (modules() === null) {
+					<tr>
+						<td colspan="3" class="text-center py-10">
+							<span class="material-icons spinner">sync</span>
+						</td>
+					</tr>
+				} @else {
+					@for (module of modules()?.data; track module.id) {
+						<tr>
+							<td>{{ module.name }}</td>
+							<td>{{ module.description }}</td>
+							<td>
+								<span class="material-icons" [style.color]="module.active ? '#4ade80' : '#f87171'">
+									{{ module.active ? "check_circle" : "cancel" }}
+								</span>
+							</td>
+						</tr>
+					} @empty {
+						<tr>
+							<td colspan="3" class="text-center py-10 text-gray-400">Sin registros</td>
+						</tr>
+					}
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
