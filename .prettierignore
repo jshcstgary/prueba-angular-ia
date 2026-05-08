@@ -1,0 +1,5 @@
+package-lock.json
+.vscode
+.angular
+node_modules
+public
